@@ -46,6 +46,45 @@ class IndexTTS2:
         # S2Mel model
         # self.s2mel = ...
         
-    def infer(self, text, spk_audio, output_path=None):
-        # Placeholder for Part 2
-        pass
+    def infer(self, text, spk_audio_path, output_path=None, emo_description=None):
+        print(f"Generating speech for: '{text}'")
+        
+        # 1. Process Text
+        text_tokens = self.tokenizer.tokenize(text)
+        token_ids = self.tokenizer.convert_tokens_to_ids(text_tokens)
+        input_ids = torch.tensor([token_ids]).to(self.device)
+        
+        # 2. Process Speaker Audio
+        spk_audio = load_audio(spk_audio_path)
+        if spk_audio is None:
+            print("Failed to load speaker audio.")
+            return None
+        spk_audio = spk_audio.to(self.device)
+        
+        # 3. Extract Features
+        # spk_emb = self.speaker_encoder(mel_spectrogram(spk_audio, ...))
+        # semantic_emb = self.semantic_model.extract(spk_audio)
+        
+        # 4. Emotion Control
+        if emo_description:
+            emo_scores, _ = self.emotion_model.inference(emo_description)
+            print(f"Emotion scores: {emo_scores}")
+            # emotional_vector = ...
+            
+        # 5. GPT Generation (Autoregressive)
+        # codes = self.gpt.inference(condition, input_ids)
+        
+        # 6. S2Mel Generation (Flow Matching)
+        # mel = self.s2mel.inference(codes, ...)
+        
+        # 7. Vocoder Generation
+        # Placeholder Mel generation for demonstration
+        fake_mel = torch.randn(1, 80, 256).to(self.device) 
+        wav = self.vocoder.infer(fake_mel)
+        
+        # 8. Save Output
+        if output_path:
+            torchaudio.save(output_path, wav.cpu(), 22050)
+            print(f"Saved to {output_path}")
+            
+        return wav
