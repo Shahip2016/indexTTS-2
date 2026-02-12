@@ -55,3 +55,26 @@ tts.infer(text="Hello world", spk_audio_path="ref.wav", output_path="out.wav")
   - `utils/`: Audio and text utilities
   - `config.py`: Configuration handling
 - `cli.py`: Command-line entry point
+
+## Acknowledgements
+
+This implementation is based on the research paper "IndexTTS: An Industrial-Level Controllable and Efficient Zero-Shot Text-To-Speech System".
+
+We acknowledge the following open-source projects that inspired or are used in this codebase:
+- [BigVGAN](https://github.com/NVIDIA/BigVGAN)
+- [MaskGCT](https://github.com/open-mmlab/Amphion/tree/main/models/tts/maskgct)
+- [Qwen](https://huggingface.co/Qwen)
+- [W2V-BERT](https://huggingface.co/facebook/w2v-bert-2.0)
+
+## Citation
+
+If you use this code or the original paper in your research, please cite:
+
+```bibtex
+@article{deng2025indextts,
+  title={IndexTTS: An Industrial-Level Controllable and Efficient Zero-Shot Text-To-Speech System},
+  author={Wei Deng, Siyi Zhou, Jingchen Shu, Jinchao Wang, Lu Wang},
+  journal={arXiv preprint arXiv:2502.05512},
+  year={2025}
+}
+```
