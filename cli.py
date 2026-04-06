@@ -10,6 +10,7 @@ def main():
     parser.add_argument("--model_dir", type=str, default="checkpoints", help="Directory containing model checkpoints")
     parser.add_argument("--config", type=str, default="checkpoints/config.yaml", help="Path to config file")
     parser.add_argument("--emotion", type=str, default=None, help="Optional text description of desired emotion")
+    parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     
     args = parser.parse_args()
     
@@ -19,6 +20,8 @@ def main():
 
     try:
         tts = IndexTTS2(cfg_path=args.config, model_dir=args.model_dir)
+        if args.verbose:
+            print(f"Loaded config from {args.config} and model from {args.model_dir}")
         tts.infer(text=args.text, spk_audio_path=args.voice, output_path=args.output, emo_description=args.emotion)
         print("Done.")
     except Exception as e:
