@@ -19,7 +19,12 @@ class IndexTTS2:
         self.model_dir = model_dir
         
         if device is None:
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
+            if torch.cuda.is_available():
+                self.device = "cuda"
+            elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+                self.device = "mps"
+            else:
+                self.device = "cpu"
         else:
             self.device = device
             
