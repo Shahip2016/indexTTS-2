@@ -65,3 +65,7 @@ class Config:
 
     def get(self, key, default=None):
         return self.cfg.get(key, default)
+
+    def save(self, save_path):
+        """Save the underlying OmegaConf object to a file."""
+        OmegaConf.save(self.cfg, save_path)
