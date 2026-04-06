@@ -1,8 +1,9 @@
 import os
+from typing import Optional, Any
 from omegaconf import OmegaConf
 
 class Config:
-    def __init__(self, cfg_path=None):
+    def __init__(self, cfg_path: Optional[str] = None):
         self.cfg = None
         if cfg_path and os.path.exists(cfg_path):
             self.cfg = OmegaConf.load(cfg_path)
@@ -59,13 +60,13 @@ class Config:
                 "emo_matrix": "emo_matrix.pt"
             })
 
-    def load(self, cfg_path):
+    def load(self, cfg_path: str) -> Any:
         self.cfg = OmegaConf.load(cfg_path)
         return self.cfg
 
-    def get(self, key, default=None):
+    def get(self, key: str, default: Any = None) -> Any:
         return self.cfg.get(key, default)
 
-    def save(self, save_path):
+    def save(self, save_path: str):
         """Save the underlying OmegaConf object to a file."""
         OmegaConf.save(self.cfg, save_path)
