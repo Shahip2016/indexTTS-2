@@ -3,6 +3,10 @@ import torch
 import torchaudio
 import numpy as np
 import time
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO)
 
 from indextts2.config import Config
 from indextts2.models.vocoder import BigVGAN
@@ -29,7 +33,7 @@ class IndexTTS2:
         else:
             self.device = device
             
-        print(f"Initializing IndexTTS2 on {self.device}...")
+        logger.info(f"Initializing IndexTTS2 on {self.device}...")
         
         # Load models
         self.vocoder = BigVGAN(device=self.device)
@@ -53,7 +57,7 @@ class IndexTTS2:
         # self.s2mel = ...
         
     def infer(self, text, spk_audio_path, output_path=None, emo_description=None):
-        print(f"Generating speech for: '{text}'")
+        logger.info(f"Generating speech for: '{text}'")
         start_time = time.time()
         
         # 1. Process Text
@@ -64,7 +68,7 @@ class IndexTTS2:
         # 2. Process Speaker Audio
         spk_audio = load_audio(spk_audio_path)
         if spk_audio is None:
-            print("Failed to load speaker audio.")
+            logger.error("Failed to load speaker audio.")
             return None
         spk_audio = spk_audio.to(self.device)
         
@@ -92,8 +96,8 @@ class IndexTTS2:
         # 8. Save Output
         if output_path:
             torchaudio.save(output_path, wav.cpu(), 22050)
-            print(f"Saved to {output_path}")
+            logger.info(f"Saved to {output_path}")
             
         end_time = time.time()
-        print(f"Inference completed in {end_time - start_time:.2f} seconds.")
+        logger.info(f"Inference completed in {end_time - start_time:.2f} seconds.")
         return wav
