@@ -2,6 +2,7 @@ import os
 import torch
 import torchaudio
 import numpy as np
+import time
 
 from indextts2.config import Config
 from indextts2.models.vocoder import BigVGAN
@@ -53,6 +54,7 @@ class IndexTTS2:
         
     def infer(self, text, spk_audio_path, output_path=None, emo_description=None):
         print(f"Generating speech for: '{text}'")
+        start_time = time.time()
         
         # 1. Process Text
         text_tokens = self.tokenizer.tokenize(text)
@@ -92,4 +94,6 @@ class IndexTTS2:
             torchaudio.save(output_path, wav.cpu(), 22050)
             print(f"Saved to {output_path}")
             
+        end_time = time.time()
+        print(f"Inference completed in {end_time - start_time:.2f} seconds.")
         return wav
